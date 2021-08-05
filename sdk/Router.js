@@ -23,6 +23,12 @@ module.exports = function (storages, options = {}) {
             return res.sendStatus(200);
         });
 
+        router.get(`/${storage.code}/view`, async function (req, res) {
+            //await storage.mkdir(req.query.path, req.query.name);
+            console.log(req.query.path)
+            return  res.sendFile(req.query.path);
+        });
+
         // `delete` endpoint
         router.post(`/${storage.code}/delete`, async function (req, res) {
             await storage.delete(req.query.path);

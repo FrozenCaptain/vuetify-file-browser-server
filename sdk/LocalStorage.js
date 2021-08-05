@@ -74,7 +74,9 @@ class LocalStorage {
             console.error(err);
         }
     }
-
+    async view(path){
+        return this.root + path
+    }
     async mkdir(path) {
         await fsPromises.mkdir(this.root + path, { recursive: true });
     }

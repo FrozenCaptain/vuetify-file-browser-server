@@ -26,7 +26,8 @@ module.exports = function (storages, options = {}) {
         router.get(`/${storage.code}/view`, async function (req, res) {
             //await storage.mkdir(req.query.path, req.query.name);
             console.log(req.query.path)
-            return  res.sendFile(req.query.path);
+            let filename = await storage.view(req.query.path);
+            return  res.sendFile(filename);
         });
 
         // `delete` endpoint

@@ -6,25 +6,26 @@ class S3Storage {
         this.code = "s3";
         const S3Endpoint = endpoint !== null ? new AWS.Endpoint(endpoint) : null;
         if( S3Endpoint !== null){
-            AWS.config.update({
+            this.S3 = new AWS.S3({
                 endpoint: S3Endpoint,
                 accessKeyId: accessKeyId,
                 secretAccessKey: secretKey,
-                //region: region
+                params: { Bucket: bucket }
             });
         }else{
-            AWS.config.update({
+            this.S3 = new AWS.S3({
+                region: region,
                 accessKeyId: accessKeyId,
                 secretAccessKey: secretKey,
-                region: region
+                params: { Bucket: bucket }
             });
         }
-        
 
-        this.S3 = new AWS.S3({
-            apiVersion: "2006-03-01",
-            params: { Bucket: bucket }
-        });
+
+        // this.S3 = new AWS.S3({
+        //     apiVersion: "2006-03-01",
+        //     params: { Bucket: bucket }
+        // });
 
         if (rootPath && rootPath[0] === "/") {
             rootPath = rootPath.slice(1);

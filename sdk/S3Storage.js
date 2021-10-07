@@ -83,7 +83,7 @@ class S3Storage {
             Bucket: this.bucket,
             Key:    this.rootPath + path,
             Expires: expireSeconds
-        }).promise();
+        });
         return url;
     }
     async upload(path, files) {

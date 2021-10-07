@@ -76,7 +76,16 @@ class S3Storage {
             console.error(err);
         }
     }
-
+    async view(path){
+        const expireSeconds = 60 * 5; // 5 minutes
+        const url = this.S3.getSignedUrl('getObject', {
+            Bucket: bucket,
+            Key:    this.rootPath + path,
+            Expires: expireSeconds
+        });
+        
+        return url;
+    }
     async upload(path, files) {
         try {
             const fs = require("fs");

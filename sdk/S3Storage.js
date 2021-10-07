@@ -4,6 +4,7 @@ const nodePath = require("path"),
 class S3Storage {
     constructor(accessKeyId, secretKey, region, bucket, rootPath,endpoint = null) {
         this.code = "s3";
+        this.bucket = bucket;
         const S3Endpoint = endpoint !== null ? new AWS.Endpoint(endpoint) : null;
         if( S3Endpoint !== null){
             this.S3 = new AWS.S3({
@@ -78,12 +79,11 @@ class S3Storage {
     }
     async view(path){
         const expireSeconds = 60 * 5; // 5 minutes
-        const url = this.S3.getSignedUrl('getObject', {
-            Bucket: bucket,
+        const url = await this.S3.getSignedUrl('getObject', {
+            Bucket: this.bucket,
             Key:    this.rootPath + path,
             Expires: expireSeconds
-        });
-        
+        }).promise();
         return url;
     }
     async upload(path, files) {

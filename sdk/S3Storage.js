@@ -2,13 +2,24 @@ const nodePath = require("path"),
     AWS = require("aws-sdk");
 
 class S3Storage {
-    constructor(accessKeyId, secretKey, region, bucket, rootPath) {
+    constructor(accessKeyId, secretKey, region, bucket, rootPath,endpoint = null) {
         this.code = "s3";
-        AWS.config.update({
-            accessKeyId: accessKeyId,
-            secretAccessKey: secretKey,
-            region: region
-        });
+        const S3Endpoint = endpoint !== null ? new AWS.Endpoint(endpoint) : null;
+        if( S3Endpoint !== null){
+            AWS.config.update({
+                endpoint: S3Endpoint,
+                accessKeyId: accessKeyId,
+                secretAccessKey: secretKey,
+                //region: region
+            });
+        }else{
+            AWS.config.update({
+                accessKeyId: accessKeyId,
+                secretAccessKey: secretKey,
+                region: region
+            });
+        }
+        
 
         this.S3 = new AWS.S3({
             apiVersion: "2006-03-01",

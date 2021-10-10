@@ -24,7 +24,9 @@ module.exports = function (storages, options = {}) {
         });
         // `view` endpoint
         router.get(`/${storage.code}/view`, async function (req, res) {
-            
+            if(req.query.path === ""){
+                return res.status(500).send("Not Found");
+            }
             let filename = await storage.view(req.query.path);
             console.log(filename);
             //return  res.sendFile(filename);

@@ -78,14 +78,15 @@ class S3Storage {
         }
     }
     async view(path){
-      
+        const olddate = new Date
+        const expireDate = new Date(olddate.getTime() + 5*60000);
         const expireSeconds = 60 * 5; // 5 minutes
         const url = await this.S3.getSignedUrl('getObject', {
             Bucket: this.bucket,
             Key:    path.substring(1),
             Expires: expireSeconds
         });
-        return url;
+        return {url:url,expire:expireDate};
     }
     async upload(path, files) {
         try {

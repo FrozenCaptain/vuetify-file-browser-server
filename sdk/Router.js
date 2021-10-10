@@ -27,10 +27,10 @@ module.exports = function (storages, options = {}) {
             if(req.query.path === ""){
                 return res.status(500).send("Not Found");
             }
-            let filename = await storage.view(req.query.path);
-            console.log(filename);
+            let file = await storage.view(req.query.path);
+            
             //return  res.sendFile(filename);
-            return res.status(200).send(filename);
+            return res.status(200).send(file);
         });
 
         // `delete` endpoint

@@ -85,7 +85,7 @@ class S3Storage {
         }
         const olddate = new Date
         const expireDate = new Date(olddate.getTime() + 30*60000);
-        const expireSeconds = 60 * 30; // 5 minutes
+        const expireSeconds = 60 * 30; // 30 minutes
         const url = await this.S3.getSignedUrl('getObject', {
             Bucket: this.bucket,
             Key:    path.substring(1),

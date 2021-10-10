@@ -1,10 +1,11 @@
 const nodePath = require("path"),
     AWS = require("aws-sdk");
-
+const urlCacheList = [];
 class S3Storage {
     constructor(accessKeyId, secretKey, region, bucket, rootPath,endpoint = null) {
         this.code = "s3";
         this.bucket = bucket;
+       
         const S3Endpoint = endpoint !== null ? new AWS.Endpoint(endpoint) : null;
         if( S3Endpoint !== null){
             this.S3 = new AWS.S3({
@@ -78,6 +79,10 @@ class S3Storage {
         }
     }
     async view(path){
+        const cachedUrl = urlCacheList.find(item => item.path === path)
+        if(cachedUrl !== null && cachedUrl !== undefined && new Date(cachedUrl.expire) > new Date().getTime()){
+            return cachedUrl;
+        }
         const olddate = new Date
         const expireDate = new Date(olddate.getTime() + 5*60000);
         const expireSeconds = 60 * 5; // 5 minutes
@@ -86,7 +91,8 @@ class S3Storage {
             Key:    path.substring(1),
             Expires: expireSeconds
         });
-        return {url:url,expire:expireDate};
+        urlCacheList.push({url:url,expire:expireDate,path:path});
+        return {url:url,expire:expireDate,path:path};
     }
     async upload(path, files) {
         try {

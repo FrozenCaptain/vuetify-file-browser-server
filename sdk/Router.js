@@ -25,6 +25,7 @@ module.exports = function (storages, options = {}) {
         // `view` endpoint
         router.get(`/${storage.code}/view`, async function (req, res) {
             let filename = await storage.view(req.query.path);
+            console.log(filename);
             //return  res.sendFile(filename);
             return  filename;
         });

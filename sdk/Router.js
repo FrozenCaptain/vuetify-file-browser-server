@@ -28,7 +28,7 @@ module.exports = function (storages, options = {}) {
             let filename = await storage.view(req.query.path);
             console.log(filename);
             //return  res.sendFile(filename);
-            return  filename;
+            return res.status(200).send(filename);
         });
 
         // `delete` endpoint

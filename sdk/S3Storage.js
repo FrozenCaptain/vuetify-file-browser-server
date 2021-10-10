@@ -81,7 +81,7 @@ class S3Storage {
         const expireSeconds = 60 * 5; // 5 minutes
         const url = await this.S3.getSignedUrl('getObject', {
             Bucket: this.bucket,
-            Key:    this.rootPath + path,
+            Key:    path,
             Expires: expireSeconds
         });
         return url;
